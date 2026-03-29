@@ -1,0 +1,126 @@
+<?php
+if(isset($_GET['file'])) {
+    $file = $_GET['file'];
+    $allowed_files = ['dosya.txt']; 
+    $file_path = __DIR__ . '/' . $file;
+
+    if(in_array($file, $allowed_files) && file_exists($file_path)) {
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($file_path).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file_path));
+        readfile($file_path);
+        exit;
+    } else {
+        echo "Dosya bulunamadı! Yol: $file_path";
+        exit;
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Eren Dündar</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+            background: #111;
+            color: white;
+        }
+        header {
+            background: #222;
+            padding: 15px;
+            text-align: center;
+        }
+        nav {
+            background: #333;
+            padding: 10px;
+            text-align: center;
+        }
+        nav button {
+            margin: 5px;
+            padding: 10px 20px;
+            background: crimson;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        section {
+            display: none;
+            padding: 20px;
+        }
+        .active {
+            display: block;
+        }
+        img {
+            width: 200px;
+            margin: 10px;
+        }
+        iframe {
+            width: 300px;
+            height: 200px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Eren Dündar</h1>
+</header>
+
+<nav>
+    <button onclick="showPage('home')">Ana Sayfa</button>
+    <button onclick="showPage('hileler')">Hileler</button>
+    <button onclick="showPage('fanart')">Fan Art</button>
+</nav>
+
+<!-- Ana Sayfa -->
+<section id="home" class="active">
+    <h2>Hoşgeldin!</h2>
+    <p>Bu sitede hileler ve fan artlar bulabilirsin 🔥</p>
+
+    <h3>YouTube Hesabım</h3>
+    <a href="https://www.youtube.com/@erendundar02" target="_blank">
+        Kanalıma Gitmek İçin Tıkla
+    </a>
+</section>
+
+<section id="hileler">
+    <h2>Hile Dosyası</h2>
+
+    <p>Hile dosyasını indirmek için aşağıya tıkla:</p>
+
+    <!-- Buton PHP ile indirme yapacak -->
+    <a href="index.php?file=dosya.txt">
+        <a href="index.php?file=dosya.txt"><button>Hile Dosyasını İndir</button></a>
+    </a>
+
+</section>
+
+<!-- Fan Art -->
+<section id="fanart">
+    <h2>Fan Artlar</h2>
+
+    <img src="https://via.placeholder.com/200">
+    <img src="https://via.placeholder.com/200">
+    <img src="https://via.placeholder.com/200">
+
+</section>
+
+<script>
+function showPage(pageId) {
+    let sections = document.querySelectorAll("section");
+    sections.forEach(sec => sec.classList.remove("active"));
+    document.getElementById(pageId).classList.add("active");
+}
+</script>
+
+</body>
+</html>
